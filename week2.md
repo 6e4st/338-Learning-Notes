@@ -409,6 +409,153 @@ public String toString() {
 ```
 
 ---
+## `toString`, Shallow Copy, and Deep Copy
+
+This lecture focused on the `toString` override method and the difference between shallow copy and deep copy.
+
+---
+
+## `toString` Override
+
+The `toString` method creates a string representation of an object.
+
+Every Java object already has a `toString` method because all objects inherit from the parent class `Object`.
+
+If a class does not override `toString`, printing the object may show something like the class name plus a memory-style reference or hash code.
+
+Example:
+
+```java id="wv6zgq"
+System.out.println(object);
+```
+
+Without a custom `toString`, the output may not clearly show the object's actual data.
+
+### Why Override `toString`
+
+It is usually a good idea to create a custom `toString` method for custom objects because it makes the object easier to read when printed.
+
+Example:
+
+```java id="c4knkn"
+@Override
+public String toString() {
+    return "name=" + name + ", score=" + score + ", numbers=" + numbers;
+}
+```
+
+In the lecture example, the object had fields such as:
+
+* `name`
+* `score`
+* `numbers`
+
+The custom `toString` printed these values instead of the default object reference.
+
+---
+
+## Object Aliases
+
+An alias happens when two variables refer to the exact same object.
+
+Example:
+
+```java id="vzqxi5"
+MyObject object1 = object;
+```
+
+This does not create a new object. It makes `object1` point to the same object as `object`.
+
+If one reference changes the object, the other reference sees the same changes because both variables refer to the same object in memory.
+
+### Important Idea
+
+Assigning one object variable to another does not automatically make a copy.
+
+---
+
+## Copying Objects
+
+A copy method can be used to create a new object based on an existing object.
+
+Example idea:
+
+```java id="ki4hy8"
+MyObject object1 = MyObject.copy(object);
+```
+
+In the lecture example, the copy method was static, so it belonged to the class `MyObject`, not to a specific instance.
+
+A copy method can create a new instance and copy over values from the original object.
+
+---
+
+## Shallow Copy
+
+A shallow copy copies some values but may still share references to internal objects.
+
+In the lecture example, `name` and `score` were copied, but the `numbers` list was still shared between the original object and the copied object.
+
+That means changing the list in one object also changed the list seen by the other object.
+
+### Important Idea
+
+A shallow copy can leave two objects connected through shared internal references.
+
+Example problem:
+
+```java id="wc5qxh"
+copy.setNumbers(original.getNumbers());
+```
+
+This copies the reference to the same list instead of creating a new list.
+
+---
+
+## Deep Copy
+
+A deep copy creates a new object and also creates new copies of internal objects.
+
+For the list example, a deep copy means creating a new `ArrayList` and copying each value into it.
+
+Example:
+
+```java id="a4z0sg"
+List<Integer> numbersCopy = new ArrayList<>();
+
+for (Integer i : original.getNumbers()) {
+    numbersCopy.add(i);
+}
+
+copy.setNumbers(numbersCopy);
+```
+
+Now the copied object has its own separate list.
+
+Changing the original list will not change the copied object's list.
+
+---
+
+## Deep Copy and Encapsulation
+
+Deep copy helps preserve encapsulation.
+
+Encapsulation means objects should control their own internal state. If two objects accidentally share the same internal list, then one object can affect the state of another object in unexpected ways.
+
+A deep copy avoids this by making sure each object has its own independent copy of internal data.
+
+---
+
+## Main Takeaways
+
+* `toString` creates a string representation of an object.
+* Custom classes should often override `toString`.
+* Assigning one object variable to another creates an alias, not a copy.
+* A shallow copy may still share internal object references.
+* A deep copy creates new copies of internal objects.
+* Deep copy helps preserve encapsulation.
+* When copying objects, be careful with fields that are objects or collections, such as `ArrayList`.
+
 
 ## Method Signatures
 
@@ -714,6 +861,150 @@ Integer pickle = fillings.get("pickle"); // null
 * `size()`: returns the number of entries.
 
 ---
+## Generics
+
+Generics in Java are containers that can hold a specific type of object. A generic lets the programmer define what type of data the container should store.
+
+For example, a `List<Integer>` is a list that stores `Integer` objects.
+
+```java
+List<Integer> numbers = new ArrayList<>();
+```
+
+In this example, the list is named `numbers`, and it can store `Integer` values. Since `List` and `ArrayList` come from the Java utility library, they need to be imported from `java.util`.
+
+```java
+import java.util.List;
+import java.util.ArrayList;
+```
+
+A generic container can store Java objects or custom objects. It cannot directly store primitive types like `int`, but it can store wrapper classes like `Integer`.
+
+---
+
+## List and ArrayList
+
+A `List` is a generic type that can hold a collection of objects. An `ArrayList` is one implementation of a `List`.
+
+Example:
+
+```java
+List<Integer> numbers = new ArrayList<>();
+numbers.add(7);
+numbers.add(42);
+```
+
+The `add` method adds values to the list.
+
+The `size` method returns how many objects are in the list.
+
+```java
+System.out.println(numbers.size());
+```
+
+---
+
+## HashMap as a Generic
+
+A `HashMap` is also a generic container. It stores key-value pairs.
+
+A `HashMap` takes two type parameters:
+
+* the key type
+* the value type
+
+Example:
+
+```java
+HashMap<String, Integer> bookList = new HashMap<>();
+```
+
+In this example:
+
+* `String` is the key type.
+* `Integer` is the value type.
+* The keys are book titles.
+* The values are the number of copies.
+
+---
+
+## HashMap Example
+
+```java
+HashMap<String, Integer> bookList = new HashMap<>();
+
+bookList.put("Interesting Times", 10);
+bookList.put("Advanced Game Design", 2);
+bookList.put("Eye of the World", 14);
+bookList.put("Dune", 12);
+```
+
+The `put` method adds a key-value pair to the map.
+
+In this example, the book title is the key, and the number of copies is the value.
+
+---
+
+## Useful HashMap Methods from the Demo
+
+The lecture demo showed several useful `HashMap` methods:
+
+* `put(key, value)`: adds a key-value pair.
+* `size()`: returns how many entries are in the map.
+* `keySet()`: returns all keys.
+* `values()`: returns all values.
+* `entrySet()`: returns all key-value pairs.
+* `containsKey(key)`: checks whether a key exists.
+* `containsValue(value)`: checks whether a value exists.
+* `get(key)`: returns the value connected to a key.
+
+Example:
+
+```java
+System.out.println(bookList.keySet());
+System.out.println(bookList.values());
+System.out.println(bookList.entrySet());
+```
+
+---
+
+## Enhanced For Loop / For-Each Loop
+
+An enhanced for loop, also called a for-each loop, can be used to loop through a collection.
+
+Example:
+
+```java
+for (String key : bookList.keySet()) {
+    System.out.println("We have " + bookList.get(key) + " copies of " + key);
+}
+```
+
+This loop goes through each key in the `HashMap`. For each key, it gets the value connected to that key using `bookList.get(key)`.
+
+Example output could be:
+
+```text
+We have 10 copies of Interesting Times
+We have 2 copies of Advanced Game Design
+We have 14 copies of Eye of the World
+We have 12 copies of Dune
+```
+
+---
+
+## Important Generics Takeaways
+
+* A generic is a container that relies on the programmer to define what it holds.
+* `List<Integer>` means a list that stores `Integer` objects.
+* `HashMap<String, Integer>` means a map with `String` keys and `Integer` values.
+* Generic containers hold objects, not primitive types.
+* Use wrapper classes like `Integer` instead of primitive types like `int`.
+* `HashMap` stores key-value pairs.
+* `keySet()` gives the keys.
+* `values()` gives the values.
+* `entrySet()` gives all key-value pairs.
+* An enhanced for loop can loop through keys and use `get(key)` to access values.
 
 ## Markov Chain Connection
 
