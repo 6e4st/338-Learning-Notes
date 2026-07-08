@@ -1,0 +1,12 @@
+week1.md
+- Lab 00
+- Lab 01
+- Git commands
+- Unit tests
+- IntelliJ
+- Java static typing
+- Objects and methods
+- Encapsulation
+- Access modifiers
+- UML
+- Javadoc/style
