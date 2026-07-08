@@ -1,0 +1,14 @@
+week2.md
+- Static variables and static methods
+- `this` in static context
+- Math class
+- Wrapper classes
+- Boxing and unboxing
+- `var`
+- `==` vs `.equals()`
+- `toString`
+- `@Override`
+- `equals` and `hashCode`
+- Inheritance
+- Interfaces
+- HashMap
